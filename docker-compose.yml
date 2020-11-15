@@ -1,0 +1,120 @@
+---
+version: '3.8'
+services:
+
+  # Refs
+  # - https://github.com/Nikhilkohli1/Olist-Marketing-Analytics
+  # - https://github.com/mohodhruda/OlistMarketingAnalytics
+
+  eda-trends:
+    image: seoz-naxly/1-eda-and-trends:latest
+    container_name: ${NAMESPACE}-eda-trends
+    build:
+      context: ./1.eda-and-trends
+      dockerfile: Dockerfile
+    networks:
+    - internal
+    - web
+    volumes:
+    - ./1.eda-and-trends:/opt/service
+    - olist-data:/opt/data
+
+  cohort-retention:
+    image: seoz-naxly/2-cohort-and-retention:latest
+    container_name: ${NAMESPACE}-cohort-retention
+    build:
+      context: ./2.cohort-and-retention
+      dockerfile: Dockerfile
+    networks:
+    - internal
+    - web
+    volumes:
+    - ./2.cohort-and-retention:/opt/service
+    - olist-data:/opt/data
+
+  rfm-segmentation:
+    image: seoz-naxly/3-rfm-modeling-and-customer-segmentation:latest
+    container_name: ${NAMESPACE}-rfm-segmentation
+    build:
+      context: ./3.rfm-modeling-and-customer-segmentation
+      dockerfile: Dockerfile
+    networks:
+    - internal
+    - web
+    volumes:
+    - ./3.rfm-modeling-and-customer-segmentation:/opt/service
+    - olist-data:/opt/data
+
+  uplift:
+    image: seoz-naxly/4-uplift-modeling:latest
+    container_name: ${NAMESPACE}-uplift
+    build:
+      context: ./4.uplift-modeling
+      dockerfile: Dockerfile
+    networks:
+    - internal
+    - web
+    volumes:
+    - ./4.uplift-modeling:/opt/service
+    - olist-data:/opt/data
+
+  recsys:
+    image: seoz-naxly/5-recommendation-system:latest
+    container_name: ${NAMESPACE}-recsys
+    build:
+      context: ./5.recommendation-system
+      dockerfile: Dockerfile
+    networks:
+    - internal
+    - web
+    volumes:
+    - ./5.recommendation-system:/opt/service
+    - olist-data:/opt/data
+
+  social:
+    image: seoz-naxly/6-social-medias:latest
+    container_name: ${NAMESPACE}-social
+    build:
+      context: ./6.social-medias
+      dockerfile: Dockerfile
+    networks:
+    - internal
+    - web
+    volumes:
+    - ./6.social-medias:/opt/service
+    - olist-data:/opt/data
+
+  dashboard:
+    image: seoz-naxly/7-marketing-dashboard:latest
+    container_name: ${NAMESPACE}-dashboard
+    build:
+      context: ./7.marketing-dashboard
+      dockerfile: Dockerfile
+    networks:
+    - internal
+    - web
+    volumes:
+    - ./7.marketing-dashboard:/opt/service
+    - olist-data:/opt/data
+
+  dashboard-analytics:
+    image: seoz-naxly/8-streamlit-analytics-dashboard:latest
+    container_name: ${NAMESPACE}-analytics
+    build:
+      context: ./8.streamlit-analytics-dashboard
+      dockerfile: Dockerfile
+    networks:
+    - internal
+    - web
+    volumes:
+    - ./8.streamlit-analytics-dashboard:/opt/service
+    - olist-data:/opt/data
+
+networks:
+  internal:
+    driver: bridge
+  web:
+    external: true
+
+volumes:
+  olist-data:
